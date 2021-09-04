@@ -59,12 +59,26 @@
       </table>
     </div>
   </div>
+
+  <div class="bg-blue-400 p-10">
+    <div class="flex flex-wrap justify-between">
+      <div class="bg-white p-10 m-5 rounded" v-for="personagem in personagens">
+        <p class="text-gray-400">#{{ personagem.id }}</p>
+        <p class="font-bold">{{ personagem.name }}</p>
+        <p>
+          <div class="bg-green-400 px-3 rounded-full inline-block">{{ personagem.status }}</div>
+        </p>
+        <p class="mt-1 text-gray-700 text-sm">Species: {{ personagem.species }}</p>
+      </div>
+    </div>
+
+  </div>
 </template>
 
 <script setup>
 import AppBtn from "./components/AppBtn.vue";
 import AppInput from "./components/AppInput.vue"
-import { reactive, ref, onMounted } from "vue"
+import { reactive, ref } from "vue"
 
 // Composition API
 const titulo = ref("Todolist Vite")
@@ -81,7 +95,33 @@ function adicionarTarefa() {
 function remover(indice) {
   tarefas.splice(indice, 1)
 }
+</script>
 
+<script>
+// Options API
+import axios from "axios"
+
+export default {
+  data() {
+    return {
+      personagens: []
+    }
+  },
+  methods: {
+    async carregarPersonagens() {
+      // Requisição HTTP para https://finalspaceapi.com/api/v0/character
+      const resposta = await axios.get("https://finalspaceapi.com/api/v0/character")
+      this.personagens = resposta.data.sort((a, b) => {
+        if(a.name.trim() > b.name.trim()) return 1
+        if(b.name.trim() > a.name.trim()) return -1
+        return 0
+      })
+    }
+  },
+  mounted() {
+    this.carregarPersonagens()
+  }
+}
 </script>
 
 <style>
