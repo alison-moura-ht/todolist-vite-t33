@@ -67,7 +67,7 @@ import AppInput from "./components/AppInput.vue"
 import { reactive, ref, onMounted } from "vue"
 
 // Composition API
-const titulo = ref("Todolist")
+const titulo = ref("Todolist Vite")
 const tarefas = reactive([])
 const tarefa = reactive({
   descricao: "",
